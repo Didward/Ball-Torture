@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* Add some style to the page */
+            body {
+                background-color: #222;
+                margin: 0;
+                padding: 0;
+            }
+            canvas {
+                background-color: #333;
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Create a canvas element that we will draw on -->
+        <canvas id="game"></canvas>
+        <script>
+        
+            alert('Ball: Let me go, please, I beg you. Let me bounce around...')
+            alert('You: Haha, Never!')
+            alert('Ball: Fine! I will just keep on trying to escape from you.')
+            alert('You: Why are you telling me this?')
+            
+            // Get the canvas element
+            var canvas = document.getElementById("game");
+            // Get the canvas context, which we will use to draw on the canvas
+            var ctx = canvas.getContext("2d");
+
+            // Set the canvas dimensions to the size of the browser window
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Set some initial values
+            var x = canvas.width / 2; // Start in the middle of the screen horizontally
+            var y = canvas.height - 30; // Start near the bottom of the screen vertically
+            var dx = 2; // Set the horizontal speed
+            var dy = -2; // Set the vertical speed
+            var ballRadius = 10; // Set the ball radius
+
+            // Define a function to draw the ball on the canvas
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            // Define a function to update the ball position
+            function updatePosition() {
+                // Change the ball position by the speed
+                x += dx;
+                y += dy;
+
+                // Check if the ball has hit the left or right wall
+                if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                    dx = -dx; // Reverse the horizontal speed
+                }
+                // Check if the ball has hit the top or bottom wall
+                if (
+                    y + dy > canvas.height - ballRadius ||
+                    y + dy < ballRadius
+                ) {
+                    dy = -dy; // Reverse the vertical speed
+                }
+            }
+
+            // Define a function to clear the canvas
+            function clearCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Define a function to draw everything on the canvas
+            function draw() {
+                clearCanvas();
+                drawBall();
+                updatePosition();
+            }
+
+            
+            // Ball Torture function
+            canvas.addEventListener("mousemove", mouseMoveHandler, false);
+            
+            function mouseMoveHandler(e) {
+                var relativeX = e.clientX - canvas.offsetLeft;
+                var relativeY = e.clientY - canvas.offsetTop;
+                x = relativeX;
+                y = relativeY;
+            }
+
+            // Set an interval to update the game 60 times per second
+            setInterval(draw, 1000 / 60);
+        </script>
+    </body>
+</html>
